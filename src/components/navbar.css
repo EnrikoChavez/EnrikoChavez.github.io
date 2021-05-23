@@ -1,0 +1,14 @@
+.navbar{
+    /* display: flex;
+    flex-grow: 1;
+    flex-shrink: 0; */
+    overflow:scroll;
+}
+
+.rerouters{
+    display: flex;
+    flex-direction: column;
+    align-content:flex-start;
+    
+}
+

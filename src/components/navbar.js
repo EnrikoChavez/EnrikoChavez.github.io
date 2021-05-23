@@ -1,16 +1,23 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import './Navbar.css'
 
-function navbar() {
+function Navbar() {
     return (
-        <div>
-            <nav className="navbar">
-                <Link to="/" className="navbar-logo">
-                    LOGO
-                </Link>
+        <div className="navbar">
+            <nav>
+                <div className="rerouters">
+                    <Link to="/">
+                        Home
+                    </Link>
+                    <Link to="/about">
+                        About
+                    </Link>
+                </div>
             </nav>
+            
         </div>
     )
 }
 
-export default navbar
+export default Navbar
