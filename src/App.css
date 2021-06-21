@@ -1,9 +1,9 @@
 * {
   margin: 0;
   padding: 0;
-  border: 0;
+  /* border: 0; */
   outline: 0;
-  font-size: 100%;
+  font-size: calc(11px + 0.5vw);
   font-family: Helvetica, sans-serif;
   color: #2e2e2e;
   height: 100%; 
