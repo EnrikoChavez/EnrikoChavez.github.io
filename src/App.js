@@ -4,6 +4,8 @@ import './App.css'
 import Navbar from './components/Navbar'
 import Home from './components/pages/Home'
 import About from './components/pages/About'
+import Sandbox from './components/pages/Sandbox'
+import Sorting from './components/pages/sandboxPages/Sorting'
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Switch>
             <Route path='/' exact component={Home}/>
             <Route path='/about' exact component={About}/>
+            <Route path='/sandbox' exact component={Sandbox}/>
+            <Route path='/sandbox/sorting' exact component={Sorting}/>
           </Switch>
           </div>
 

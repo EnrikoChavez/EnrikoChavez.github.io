@@ -13,6 +13,9 @@ function Navbar() {
                     <Link to="/about">
                         About
                     </Link>
+                    <Link to="/sandbox">
+                        Sandbox
+                    </Link>
                 </div>
             </nav>
             
