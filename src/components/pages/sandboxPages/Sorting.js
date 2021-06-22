@@ -7,25 +7,31 @@ function Sorting() {
     //constructor
     let array = []
     let animations = [] //visualizing events that happen during sorts
-    const [arrayLength, setArrayLength] = useState(30)
-    const [ms, setMs] = useState(15)
+    const [arrayLength, setArrayLength] = useState(40)
+    const [ms, setMs] = useState(599) //sudo ms
+    const [bars, setBars] = useState(array)
 
     const BAR_MAX = 100
     const BAR_MIN = 5
     const ARRAY_MAX_SIZE = 100
     const ARRAY_MIN_SIZE = 3
-    const MAX_SPEED = 30
+    const MAX_SPEED = 600
     const MIN_SPEED = 0
-    for (let i = 0; i < arrayLength; i++){
-        array.push(randomInt(BAR_MIN, BAR_MAX))
-    }
-    const [bars, setBars] = useState(array)
+    // for (let i = 0; i < arrayLength; i++){
+    //     array.push(randomInt(BAR_MIN, BAR_MAX))
+    // }
 
     //creates a new random array
     function resetArray(){
         array = []
+        let index_array = []
         for (let i = 0; i < arrayLength; i++){
-            array.push(randomInt(BAR_MIN, BAR_MAX))
+            array.push(95/arrayLength * i + 5 + Math.random()*0.2)
+            index_array.push(i)
+        }
+        index_array = shuffle(index_array)
+        for (let i = 0; i < arrayLength/1; i++){
+            array[index_array[i]] = randomInt(BAR_MIN, BAR_MAX)
         }
         setBars(array)
         animations = []
@@ -53,17 +59,31 @@ function Sorting() {
         animateSort()
     }
 
-    // function insertionSort(){
-    //     animations = []
-    //     for(let i = 1; i < arrayLength; i++){
-    //         for(let j = i - 1; j >= 0; j--){
-    //             animations.push([true,i,j])
-    //             if (bars[i] < bars[j]){
-    //                 animations.push
-    //             }
-    //         }
-    //     }
-    // }
+    function insertionSort(){
+        animations = []
+        for(let i = 1; i < arrayLength; i++){
+            let right_ind = i
+            let left_ind = right_ind - 1
+            for (; left_ind >= 0;){
+                animations.push([true,left_ind,right_ind])
+                if (bars[right_ind] < bars[left_ind]){
+                    //swap bars heights
+                    animations.push([false,left_ind,right_ind,bars[right_ind],bars[left_ind]])
+                    let temp = bars[right_ind]
+                    bars[right_ind] = bars[left_ind]
+                    bars[left_ind] = temp
+
+                    //compare the two other ones
+                    right_ind = left_ind
+                    left_ind = left_ind - 1   
+                }
+                else{
+                    break
+                }
+            }
+        }
+        animateSort()
+    }
 
     //animates the sorting that happenned 
     function animateSort(){
@@ -109,8 +129,8 @@ function Sorting() {
                         resetArray();
                     }
                     else{
-                        barsScraped[i_ind].style.backgroundColor = 'blue'
-                        barsScraped[j_ind].style.backgroundColor = 'blue'
+                        barsScraped[i_ind].style.backgroundColor = 'lightgreen'
+                        barsScraped[j_ind].style.backgroundColor = 'lightgreen'
                         barsScraped[i_ind].style.height = `${animation[3]}%`
                         barsScraped[j_ind].style.height = `${animation[4]}%`
                     }
@@ -140,9 +160,7 @@ function Sorting() {
         window.location.reload(false);
     }
 
-    useEffect(() => {
-        resetArray()
-    }, [arrayLength])
+    useEffect(resetArray, [arrayLength])
 
     return (
         <div className="sorting-page">
@@ -154,6 +172,7 @@ function Sorting() {
             <div className="button-list">
                 <button className="button" onClick={resetArray}>reset array</button>
                 <button className="button" onClick={selectionSort}>selection sort</button>
+                <button className="button" onClick={insertionSort}>insertion sort</button>
                 <div className="slider-box">
                     <div className="slider-text">array size: {arrayLength}</div>
                     <RangeStepInput className="slider" min={ARRAY_MIN_SIZE} max={ARRAY_MAX_SIZE} 
@@ -173,5 +192,24 @@ function Sorting() {
 function randomInt(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+//https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(array) {
+    var currentIndex = array.length,  randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
 
 export default Sorting

@@ -23,16 +23,17 @@
 
 .button-list{
     display: flex;
+    flex-wrap: wrap;
     height: 20%;
-    margin: 5% 2% 5% 2%;
+    margin: 1%
 }
 
 .button{
-    padding-left: 1%;
-    padding-right: 1%;
-    margin-left: 5px;
     background-color: #9be4ff;
     color: black;
+    font-size: calc(8px + 0.5vw);
+    padding-left: 3px;
+    padding-right: 3px;
     /* border: none; */
 }
 
