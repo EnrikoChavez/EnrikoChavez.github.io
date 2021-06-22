@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-    background-color: #f1f1f1;
+    background-color: #ffffff;
     align-items: flex-end;
     height: 100%;
 }
@@ -34,4 +34,26 @@
     background-color: #9be4ff;
     color: black;
     /* border: none; */
+}
+
+/* The slider itself */
+.slider {
+    display: flex;
+    flex-grow: 1;
+    margin-left: 5px;
+}
+
+.slider-box{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.slider-text{
+    display: flex;
+    background-color: rgb(250, 250, 250);
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
 }
