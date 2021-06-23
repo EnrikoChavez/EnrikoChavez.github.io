@@ -13,6 +13,39 @@
     height: 100%;
 }
 
+.reset-area{
+    display: flex;
+    flex-direction: column;
+    border: 1px dotted grey;
+}
+
+.sorted-levels{
+    display: flex;
+    /* flex-grow: 1; */
+    /* background-color: lightgrey; */
+    justify-content: center;
+    /* height: 50%; */
+}
+
+.sorted-text{
+    display: flex;
+    align-items:center;
+}
+
+.reset-level-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.reset-level{
+    display: flex;
+    align-items: center;
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
 .single-bar{
     display: inline-block;
     background-color: red;

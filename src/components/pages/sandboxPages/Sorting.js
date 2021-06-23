@@ -7,19 +7,19 @@ function Sorting() {
     //constructor
     let array = []
     let animations = [] //visualizing events that happen during sorts
+    const sortedLevels = [1,2,5,10] //0, 50, 80, 90%
+    const sortedLevelsDisplay = [0, 50, ]
+    const [sortedLevelIndex, setSortedLevelIndex] = useState(0)
     const [arrayLength, setArrayLength] = useState(40)
     const [ms, setMs] = useState(599) //sudo ms
     const [bars, setBars] = useState(array)
 
     const BAR_MAX = 100
     const BAR_MIN = 5
-    const ARRAY_MAX_SIZE = 100
+    const ARRAY_MAX_SIZE = 400
     const ARRAY_MIN_SIZE = 3
     const MAX_SPEED = 600
     const MIN_SPEED = 0
-    // for (let i = 0; i < arrayLength; i++){
-    //     array.push(randomInt(BAR_MIN, BAR_MAX))
-    // }
 
     //creates a new random array
     function resetArray(){
@@ -30,7 +30,7 @@ function Sorting() {
             index_array.push(i)
         }
         index_array = shuffle(index_array)
-        for (let i = 0; i < arrayLength/1; i++){
+        for (let i = 0; i < arrayLength/sortedLevels[sortedLevelIndex]; i++){
             array[index_array[i]] = randomInt(BAR_MIN, BAR_MAX)
         }
         setBars(array)
@@ -160,6 +160,18 @@ function Sorting() {
         window.location.reload(false);
     }
 
+    function lowerLevel(){
+        if (sortedLevelIndex !== 0){
+            setSortedLevelIndex(sortedLevelIndex - 1)
+        }
+    }
+
+    function higherLevel(){
+        if (sortedLevelIndex !== (sortedLevels.length - 1)){
+            setSortedLevelIndex(sortedLevelIndex + 1)
+        }
+    }
+
     useEffect(resetArray, [arrayLength])
 
     return (
@@ -170,7 +182,19 @@ function Sorting() {
                 ))}
             </div>
             <div className="button-list">
-                <button className="button" onClick={resetArray}>reset array</button>
+                <div className="reset-area">
+                    <button className="button" onClick={resetArray}>reset array</button>
+                    <div className="sorted-text">sorted {100 - 100/sortedLevels[sortedLevelIndex]}%</div>
+                    <div className="sorted-levels">
+                        <button className="reset-level-button" onClick={lowerLevel}>
+                        -
+                        </button>
+                        <div className="reset-level"></div>
+                        <button className="reset-level-button" onClick={higherLevel}>
+                        +
+                        </button>
+                    </div>
+                </div>
                 <button className="button" onClick={selectionSort}>selection sort</button>
                 <button className="button" onClick={insertionSort}>insertion sort</button>
                 <div className="slider-box">
