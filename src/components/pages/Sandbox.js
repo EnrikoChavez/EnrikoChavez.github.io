@@ -9,12 +9,17 @@ function Sandbox() {
                 sandbox projects
             </div>
             <div className="project-list">
-                <Link to="/sandbox/sorting">
+                <Link to="/sandbox/sorting" onClick={refreshPage}>
                     sorting
                 </Link>
             </div>
         </div>
     )
+}
+
+function refreshPage(){
+    window.location.reload(false);
+    window.location.assign('/sandbox/sorting')
 }
 
 export default Sandbox

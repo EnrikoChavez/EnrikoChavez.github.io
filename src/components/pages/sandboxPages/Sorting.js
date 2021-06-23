@@ -8,25 +8,27 @@ function Sorting() {
     let array = []
     let animations = [] //visualizing events that happen during sorts
     const sortedLevels = [1,2,5,10] //0, 50, 80, 90%
-    const sortedLevelsDisplay = [0, 50, ]
-    const [sortedLevelIndex, setSortedLevelIndex] = useState(0)
-    const [arrayLength, setArrayLength] = useState(40)
-    const [ms, setMs] = useState(599) //sudo ms
-    const [bars, setBars] = useState(array)
+
+    const speedLevels = [0, 25, 50, 98, 99.75, 100]
 
     const BAR_MAX = 100
     const BAR_MIN = 5
-    const ARRAY_MAX_SIZE = 400
+    const ARRAY_MAX_SIZE = 200
     const ARRAY_MIN_SIZE = 3
-    const MAX_SPEED = 600
-    const MIN_SPEED = 0
+    const MAX_SPEED = 400 //no units, just relative
+
+    const [sortedLevelIndex, setSortedLevelIndex] = useState(0)
+    const [speedLevelIndex, setSpeedLevelIndex] = useState(speedLevels.length - 3)
+    const [arrayLength, setArrayLength] = useState(32)
+    const [ms, setMs] = useState(MAX_SPEED * (speedLevels[speedLevelIndex]/100)) //sudo ms
+    const [bars, setBars] = useState(array)
 
     //creates a new random array
     function resetArray(){
         array = []
         let index_array = []
         for (let i = 0; i < arrayLength; i++){
-            array.push(95/arrayLength * i + 5 + Math.random()*0.2)
+            array.push((BAR_MAX - BAR_MIN)/arrayLength * i + BAR_MIN + Math.random()*0.2)
             index_array.push(i)
         }
         index_array = shuffle(index_array)
@@ -73,7 +75,7 @@ function Sorting() {
                     bars[right_ind] = bars[left_ind]
                     bars[left_ind] = temp
 
-                    //compare the two other ones
+                    //compare the two bars lower on height
                     right_ind = left_ind
                     left_ind = left_ind - 1   
                 }
@@ -87,13 +89,29 @@ function Sorting() {
 
     //animates the sorting that happenned 
     function animateSort(){
-
+        const buttons = document.getElementsByClassName("button")
+        for (let i = 0; i < buttons.length; i++){
+            buttons[i].disabled = true
+        }
+        const resetLevelButtons = document.getElementsByClassName("reset-level-button")
         const sliders = document.getElementsByClassName("slider")
+        resetLevelButtons[0].disabled = true
+        resetLevelButtons[1].disabled = true
         sliders[0].disabled = true
         sliders[1].disabled = true
         setTimeout(() => {
-        sliders[0].disabled = false
-        sliders[1].disabled = false
+        if(buttons.length === 0 || resetLevelButtons.length === 0 || sliders.length === 0){
+            resetArray();
+        }
+        else{
+            for (let i = 0; i < buttons.length; i++){
+                buttons[i].disabled = false
+            }
+            resetLevelButtons[0].disabled = false
+            resetLevelButtons[1].disabled = false
+            sliders[0].disabled = false
+            sliders[1].disabled = false
+        }
         }, (animations.length) * (MAX_SPEED-ms) + 10)
 
         const barsScraped = document.getElementsByClassName("single-bar")
@@ -152,12 +170,9 @@ function Sorting() {
         setArrayLength(length)
     }
 
-    function onMsChange(milli){
+    function onMsChange(milli, speedIndex){
         setMs(milli)
-    }
-
-    function reloadPage(){
-        window.location.reload(false);
+        setSpeedLevelIndex(speedIndex)
     }
 
     function lowerLevel(){
@@ -172,7 +187,7 @@ function Sorting() {
         }
     }
 
-    useEffect(resetArray, [arrayLength])
+    useEffect(resetArray, [arrayLength, sortedLevelIndex])
 
     return (
         <div className="sorting-page">
@@ -184,7 +199,7 @@ function Sorting() {
             <div className="button-list">
                 <div className="reset-area">
                     <button className="button" onClick={resetArray}>reset array</button>
-                    <div className="sorted-text">sorted {100 - 100/sortedLevels[sortedLevelIndex]}%</div>
+                    <div className="sorted-text">sorted {100 * (1 - 1/sortedLevels[sortedLevelIndex])}%</div>
                     <div className="sorted-levels">
                         <button className="reset-level-button" onClick={lowerLevel}>
                         -
@@ -203,14 +218,19 @@ function Sorting() {
                         value={arrayLength} step={1} onChange={e => onLengthChange(e.target.value)}/>
                 </div>
                 <div className="slider-box">
-                    <div className="slider-text">speed: {Math.floor(ms/MAX_SPEED * 100)}</div>
-                    <RangeStepInput className="slider" min={MIN_SPEED} max={MAX_SPEED} 
-                        value={ms} step={1} onChange={e => onMsChange(e.target.value)}/>
+                    <div className="slider-text">speed (exponential): {ms/MAX_SPEED * 100}</div>
+                    <RangeStepInput className="slider" min={0} max={speedLevels.length - 1} 
+                        value={speedLevelIndex} step={1} onChange={
+                            e => onMsChange(MAX_SPEED * (speedLevels[e.target.value]/100), e.target.value)}/>
                 </div>
-                <button className="button" onClick={reloadPage}>cancel long sort<br/>(refresh page)</button>
+                <button className="cancel-button" onClick={reloadPage}>cancel long sort<br/>(refresh page)</button>
             </div>
         </div>
     )
+}
+
+function reloadPage(){
+    window.location.reload(false);
 }
 
 function randomInt(min, max){

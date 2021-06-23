@@ -70,6 +70,15 @@
     /* border: none; */
 }
 
+.cancel-button{
+    background-color: #9be4ff;
+    color: black;
+    font-size: calc(8px + 0.5vw);
+    padding-left: 3px;
+    padding-right: 3px;
+    /* border: none; */
+}
+
 /* The slider itself */
 .slider {
     display: flex;
