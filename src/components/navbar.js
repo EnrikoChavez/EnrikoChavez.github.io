@@ -7,13 +7,13 @@ function Navbar() {
         <div className="navbar">
             <nav>
                 <div className="rerouters">
-                    <Link to="/">
+                    <Link to="/" onClick={() => {refreshPage("/")}}>
                         Home
                     </Link>
-                    <Link to="/about">
+                    <Link to="/about" onClick={() => {refreshPage("/about")}}>
                         About
                     </Link>
-                    <Link to="/sandbox">
+                    <Link to="/sandbox" onClick={() => {refreshPage("/sandbox")}}>
                         Sandbox
                     </Link>
                 </div>
@@ -21,6 +21,13 @@ function Navbar() {
             
         </div>
     )
+}
+
+function refreshPage(pathName){
+    if (window.location.pathname === "/sandbox/sorting"){
+        window.location.reload(false);
+        window.location.assign(pathName)
+    }
 }
 
 export default Navbar

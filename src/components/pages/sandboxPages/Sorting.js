@@ -8,19 +8,18 @@ function Sorting() {
     let array = []
     let animations = [] //visualizing events that happen during sorts
     const sortedLevels = [1,2,5,10] //0, 50, 80, 90%
-
     const speedLevels = [0, 25, 50, 98, 99.75, 100]
 
     const BAR_MAX = 100
     const BAR_MIN = 5
-    const ARRAY_MAX_SIZE = 200
+    const ARRAY_MAX_SIZE = 100
     const ARRAY_MIN_SIZE = 3
-    const MAX_SPEED = 400 //no units, just relative
+    const MAX_MS = 400 //ms between each animation
 
     const [sortedLevelIndex, setSortedLevelIndex] = useState(0)
     const [speedLevelIndex, setSpeedLevelIndex] = useState(speedLevels.length - 3)
     const [arrayLength, setArrayLength] = useState(32)
-    const [ms, setMs] = useState(MAX_SPEED * (speedLevels[speedLevelIndex]/100)) //sudo ms
+    const [ms, setMs] = useState(MAX_MS * (speedLevels[speedLevelIndex]/100)) //sudo ms
     const [bars, setBars] = useState(array)
 
     //creates a new random array
@@ -28,7 +27,7 @@ function Sorting() {
         array = []
         let index_array = []
         for (let i = 0; i < arrayLength; i++){
-            array.push((BAR_MAX - BAR_MIN)/arrayLength * i + BAR_MIN + Math.random()*0.2)
+            array.push((BAR_MAX - BAR_MIN)/arrayLength * i + BAR_MIN + Math.random()*0.5)
             index_array.push(i)
         }
         index_array = shuffle(index_array)
@@ -74,7 +73,6 @@ function Sorting() {
                     let temp = bars[right_ind]
                     bars[right_ind] = bars[left_ind]
                     bars[left_ind] = temp
-
                     //compare the two bars lower on height
                     right_ind = left_ind
                     left_ind = left_ind - 1   
@@ -87,23 +85,18 @@ function Sorting() {
         animateSort()
     }
 
-    //animates the sorting that happenned 
-    function animateSort(){
+    function disableButtonsWhenSort(){
         const buttons = document.getElementsByClassName("button")
+        const resetLevelButtons = document.getElementsByClassName("reset-level-button")
+        const sliders = document.getElementsByClassName("slider")
         for (let i = 0; i < buttons.length; i++){
             buttons[i].disabled = true
         }
-        const resetLevelButtons = document.getElementsByClassName("reset-level-button")
-        const sliders = document.getElementsByClassName("slider")
         resetLevelButtons[0].disabled = true
         resetLevelButtons[1].disabled = true
         sliders[0].disabled = true
         sliders[1].disabled = true
         setTimeout(() => {
-        if(buttons.length === 0 || resetLevelButtons.length === 0 || sliders.length === 0){
-            resetArray();
-        }
-        else{
             for (let i = 0; i < buttons.length; i++){
                 buttons[i].disabled = false
             }
@@ -111,9 +104,12 @@ function Sorting() {
             resetLevelButtons[1].disabled = false
             sliders[0].disabled = false
             sliders[1].disabled = false
-        }
-        }, (animations.length) * (MAX_SPEED-ms) + 10)
+        }, (animations.length) * (MAX_MS-ms) + 10)
+    }
 
+    //animates the sorting that happenned 
+    function animateSort(){
+        disableButtonsWhenSort()
         const barsScraped = document.getElementsByClassName("single-bar")
         for(let i = 0; i < animations.length; i++){  
             let animation = animations[i]
@@ -123,45 +119,25 @@ function Sorting() {
             if (comparison === true){
                 setTimeout(() => {
                     //if someone clicks out of sorting page while sorting
-                    if(!barsScraped[i_ind] || !barsScraped[j_ind]){
-                        resetArray();
-                    }
-                    else{
-                        barsScraped[i_ind].style.backgroundColor = 'turquoise'
-                        barsScraped[j_ind].style.backgroundColor = 'turquoise'
-                    }
-                }, i * (MAX_SPEED-ms))
+                    barsScraped[i_ind].style.backgroundColor = 'turquoise'
+                    barsScraped[j_ind].style.backgroundColor = 'turquoise'                   
+                }, i * (MAX_MS-ms))
                 setTimeout(() => {
-                    if(!barsScraped[i_ind] || !barsScraped[j_ind]){
-                        resetArray();
-                    }
-                    else{
-                        barsScraped[i_ind].style.backgroundColor = 'red'
-                        barsScraped[j_ind].style.backgroundColor = 'red'
-                    }
-                }, (i + 1) * (MAX_SPEED-ms))
+                    barsScraped[i_ind].style.backgroundColor = 'red'
+                    barsScraped[j_ind].style.backgroundColor = 'red'                  
+                }, (i + 1) * (MAX_MS-ms))
             }
             else{ //swap
                 setTimeout(() => {
-                    if(!barsScraped[i_ind] || !barsScraped[j_ind]){
-                        resetArray();
-                    }
-                    else{
-                        barsScraped[i_ind].style.backgroundColor = 'lightgreen'
-                        barsScraped[j_ind].style.backgroundColor = 'lightgreen'
-                        barsScraped[i_ind].style.height = `${animation[3]}%`
-                        barsScraped[j_ind].style.height = `${animation[4]}%`
-                    }
-                }, i * (MAX_SPEED-ms))
+                    barsScraped[i_ind].style.backgroundColor = 'lightgreen'
+                    barsScraped[j_ind].style.backgroundColor = 'lightgreen'
+                    barsScraped[i_ind].style.height = `${animation[3]}%`
+                    barsScraped[j_ind].style.height = `${animation[4]}%`
+                }, i * (MAX_MS-ms))
                 setTimeout(() => {
-                    if(!barsScraped[i_ind] || !barsScraped[j_ind]){
-                        resetArray();
-                    }
-                    else{
-                        barsScraped[i_ind].style.backgroundColor = 'red'
-                        barsScraped[j_ind].style.backgroundColor = 'red'
-                    }
-                }, (i+1) * (MAX_SPEED-ms))
+                    barsScraped[i_ind].style.backgroundColor = 'red'
+                    barsScraped[j_ind].style.backgroundColor = 'red'
+                }, (i+1) * (MAX_MS-ms))
             }
         }
     }
@@ -198,17 +174,17 @@ function Sorting() {
             </div>
             <div className="button-list">
                 <div className="reset-area">
-                    <button className="button" onClick={resetArray}>reset array</button>
-                    <div className="sorted-text">sorted {100 * (1 - 1/sortedLevels[sortedLevelIndex])}%</div>
                     <div className="sorted-levels">
                         <button className="reset-level-button" onClick={lowerLevel}>
                         -
                         </button>
-                        <div className="reset-level"></div>
+                        <button className="button" id="reset-button" onClick={resetArray}>reset<br/>array</button>
                         <button className="reset-level-button" onClick={higherLevel}>
                         +
                         </button>
                     </div>
+                    <div className="sorted-text">sorted {100 * (1 - 1/sortedLevels[sortedLevelIndex])}%</div>
+                    <button className="cancel-button" onClick={reloadPage}>cancel long sort<br/>(refresh page)</button>
                 </div>
                 <button className="button" onClick={selectionSort}>selection sort</button>
                 <button className="button" onClick={insertionSort}>insertion sort</button>
@@ -218,12 +194,11 @@ function Sorting() {
                         value={arrayLength} step={1} onChange={e => onLengthChange(e.target.value)}/>
                 </div>
                 <div className="slider-box">
-                    <div className="slider-text">speed (exponential): {ms/MAX_SPEED * 100}</div>
+                    <div className="slider-text">speed (exponential): {ms/MAX_MS * 100}</div>
                     <RangeStepInput className="slider" min={0} max={speedLevels.length - 1} 
                         value={speedLevelIndex} step={1} onChange={
-                            e => onMsChange(MAX_SPEED * (speedLevels[e.target.value]/100), e.target.value)}/>
+                            e => onMsChange(MAX_MS * (speedLevels[e.target.value]/100), e.target.value)}/>
                 </div>
-                <button className="cancel-button" onClick={reloadPage}>cancel long sort<br/>(refresh page)</button>
             </div>
         </div>
     )

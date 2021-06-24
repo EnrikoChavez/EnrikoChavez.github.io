@@ -30,6 +30,7 @@
 .sorted-text{
     display: flex;
     align-items:center;
+    justify-content: center;
 }
 
 .reset-level-button{
@@ -70,10 +71,14 @@
     /* border: none; */
 }
 
+#reset-button{
+    font-size: calc(5px + 0.5vw);
+}
+
 .cancel-button{
     background-color: #9be4ff;
     color: black;
-    font-size: calc(8px + 0.5vw);
+    font-size: calc(6px + 0.5vw);
     padding-left: 3px;
     padding-right: 3px;
     /* border: none; */
