@@ -147,6 +147,22 @@ function Sorting() {
         return mergedArray
     }
 
+    function bubbleSort(){
+        let animations = []
+        for (let i = 0; i < arrayLength - 1; i++){
+            for (let j = 0; j < arrayLength - 1 - i; j++){
+                animations.push([animationType.COMPARISON, j, j + 1])
+                if (bars[j] > bars[j+1]){
+                    const j_plus_one_height = bars[j+1]
+                    bars[j+1] = bars[j]
+                    bars[j] = j_plus_one_height
+                    animations.push([animationType.SWAP, j, j + 1, bars[j], bars[j+1]])
+                }
+            }
+        }
+        animateSort(animations)
+    }
+
     function animateSort(animations){
         disableButtonsWhenSort(animations)
         const barsScraped = document.getElementsByClassName("single-bar")
@@ -275,6 +291,7 @@ function Sorting() {
                 <button className="button" onClick={selectionSort}>selection sort</button>
                 <button className="button" onClick={insertionSort}>insertion sort</button>
                 <button className="button" onClick={mergeSortStarter}>merge sort</button>
+                <button className="button" onClick={bubbleSort}>bubble sort</button>
                 <div className="slider-box">
                     <div className="slider-text">array size: {arrayLength}</div>
                     <RangeStepInput className="slider" min={ARRAY_MIN_SIZE} max={ARRAY_MAX_SIZE} 
