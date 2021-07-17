@@ -8,12 +8,10 @@ function Sorting() {
     const BAR_MAX = 100
     const BAR_MIN = 5
     const ARRAY_MAX_SIZE = 200
-    const ARRAY_MIN_SIZE = 3
-    const MAX_MS = 400 //ms between each animation
+    const ARRAY_MIN_SIZE = 2
 
     const sortedLevels = useMemo(()=>[1,2,5,10], []) //0, 50, 80, 90% sorted arrays (calculated like: 100 - 100/1, 100 - 100/2, etc..)
-    const speedLevels = [0, 25, 50, 99, 99.75, 100] //0 is MAX_MS ms between each animation, 25 is MAX_MS * 0.75 ms,
-    //98 is MAX_MS * 0.02 ms, 100 is as fast as possible
+    const speedLevels = [0, 1, 2, 5, 10, 50, 100, 400] //0 ms between animations, 1 ms, 2 ms, etc..
 
     const animationType = {
         COMPARISON: "comparison",
@@ -22,9 +20,9 @@ function Sorting() {
     }
 
     const [sortedLevelIndex, setSortedLevelIndex] = useState(0)
-    const [speedLevelIndex, setSpeedLevelIndex] = useState(speedLevels.length - 3)
+    const [speedLevelIndex, setSpeedLevelIndex] = useState(2)
     const [arrayLength, setArrayLength] = useState(32)
-    const [ms, setMs] = useState(MAX_MS * (speedLevels[speedLevelIndex]/100)) //sudo ms
+    const [ms, setMs] = useState(speedLevels[speedLevelIndex])
     const [bars, setBars] = useState([])
 
     useEffect(resetArray, [arrayLength, sortedLevelIndex, sortedLevels])
@@ -91,7 +89,7 @@ function Sorting() {
         animateSort(animations)
     }
 
-    function mergeSortStarter(){//broken
+    function mergeSortStarter(){
         let animations = []
         const array = bars
         const leftIndex = 0
@@ -101,30 +99,26 @@ function Sorting() {
             bars[i] = sortedPacket[0][i]
         }
         animateSort(animations)
-        //bars = sortedPacket[0] if merge is coded well
     }
-
-    //0,1,2,3
 
     function mergeSort(leftIndex, rightIndex, array, animations){
         if (leftIndex === rightIndex){
-            return [[array[0]], leftIndex] //tuple of array, and indeces of array
+            return [[array[0]], leftIndex] //tuple of array, and index of where subarray starts
         }
-        const middleIndex = Math.floor((leftIndex + rightIndex) >>> 1) //floor not necessary?
+        const middleIndex = (leftIndex + rightIndex) >>> 1
         const leftPacket = mergeSort(leftIndex, middleIndex, array.slice(0, (middleIndex - leftIndex) + 1), animations)
         const rightPacket = mergeSort(middleIndex + 1, rightIndex, array.slice((middleIndex - leftIndex) + 1), animations)
         const sortedArray = merge(leftPacket, rightPacket, animations)
         return [sortedArray, leftIndex]
     }
 
-    function merge(leftPacket, rightPacket, animations){//busted
+    function merge(leftPacket, rightPacket, animations){
         const leftSortedArray = leftPacket[0]
         const rightSortedArray = rightPacket[0]
-        let mergedArray = []
-
         const leftStart = leftPacket[1]
         const rightStart = rightPacket[1]
 
+        let mergedArray = []
         let leftPointer = 0
         let rightPointer = 0
         while (leftPointer < leftSortedArray.length && rightPointer < rightSortedArray.length){
@@ -158,20 +152,19 @@ function Sorting() {
         const barsScraped = document.getElementsByClassName("single-bar")
         for (let i = 0; i < animations.length; i++){  
             const animation = animations[i]
-            const type = animation[0] //checks if comparison or swap
+            const type = animation[0]
             switch (type){
                 case animationType.COMPARISON:{
                     const i_ind = animation[1] 
                     const j_ind = animation[2]
                     setTimeout(() => {
-                        //if someone clicks out of sorting page while sorting
                         barsScraped[i_ind].style.backgroundColor = 'turquoise'
                         barsScraped[j_ind].style.backgroundColor = 'turquoise'                   
-                    }, i * (MAX_MS - ms))
+                    }, i * (ms))
                     setTimeout(() => {
                         barsScraped[i_ind].style.backgroundColor = 'red'
                         barsScraped[j_ind].style.backgroundColor = 'red'                  
-                    }, (i + 1) * (MAX_MS - ms))
+                    }, (i + 1) * (ms))
                     break
                 }
                 case animationType.SWAP:{
@@ -184,11 +177,11 @@ function Sorting() {
                         barsScraped[j_ind].style.backgroundColor = 'lightgreen'
                         barsScraped[i_ind].style.height = `${new_i_height}%`
                         barsScraped[j_ind].style.height = `${new_j_height}%`
-                    }, i * (MAX_MS-ms))
+                    }, i * (ms))
                     setTimeout(() => {
                         barsScraped[i_ind].style.backgroundColor = 'red'
                         barsScraped[j_ind].style.backgroundColor = 'red'
-                    }, (i + 1) * (MAX_MS - ms))
+                    }, (i + 1) * (ms))
                     break
                 }
                 case animationType.SINGLE_CHANGE:{
@@ -197,10 +190,10 @@ function Sorting() {
                     setTimeout(() => {
                         barsScraped[i_ind].style.backgroundColor = 'lightgreen'
                         barsScraped[i_ind].style.height = `${new_i_height}%`
-                    }, i * (MAX_MS-ms))
+                    }, i * (ms))
                     setTimeout(() => {
                         barsScraped[i_ind].style.backgroundColor = 'red'
-                    }, (i + 1) * (MAX_MS - ms))
+                    }, (i + 1) * (ms))
                     break
                 }
                 default:{
@@ -230,7 +223,7 @@ function Sorting() {
             resetLevelButtons[1].disabled = false
             sliders[0].disabled = false
             sliders[1].disabled = false
-        }, (animations.length) * (MAX_MS-ms) + 10)
+        }, (animations.length) * (ms) + 10)
     }
 
     //for changing array size
@@ -288,10 +281,10 @@ function Sorting() {
                         value={arrayLength} step={1} onChange={e => onLengthChange(e.target.value)}/>
                 </div>
                 <div className="slider-box">
-                    <div className="slider-text">speed (exponential): {ms/MAX_MS * 100}</div>
+                    <div className="slider-text">millisecs between animations: {ms}</div>
                     <RangeStepInput className="slider" min={0} max={speedLevels.length - 1} 
                         value={speedLevelIndex} step={1} onChange={
-                            e => onMsChange(MAX_MS * (speedLevels[e.target.value]/100), e.target.value)}/>
+                            e => onMsChange(speedLevels[e.target.value], e.target.value)}/>
                 </div>
             </div>
         </div>
