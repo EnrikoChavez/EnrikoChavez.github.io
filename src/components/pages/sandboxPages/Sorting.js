@@ -42,6 +42,12 @@ function Sorting() {
         setBars(array)
     }
 
+    function swapBarHeights(indexOne, indexTwo, array){ //use it on any swaps, TODO
+        const indexOneHeight = array[indexOne]
+        array[indexOne] = array[indexTwo]
+        array[indexTwo] = indexOneHeight
+    }
+
     function selectionSort(){
         let animations = []
         for (let i = 0; i < arrayLength - 1; i++){
@@ -55,9 +61,7 @@ function Sorting() {
                 }
             }
             if (min_j_ind !== i){ //smaller bar than ith bar found to the right of ith bar
-                const min_j_height = bars[min_j_ind]
-                bars[min_j_ind] = bars[i]
-                bars[i] = min_j_height
+                swapBarHeights(min_j_ind, i, bars)
                 animations.push([animationType.SWAP, i, min_j_ind, bars[i], bars[min_j_ind]])
             }
         }
@@ -73,10 +77,8 @@ function Sorting() {
                 animations.push([animationType.COMPARISON, leftIndex, rightIndex])
                 if (bars[rightIndex] < bars[leftIndex]){
                     //swap bars heights
-                    animations.push([animationType.SWAP, leftIndex, rightIndex, bars[rightIndex], bars[leftIndex]])
-                    const rightBarHeight = bars[rightIndex]
-                    bars[rightIndex] = bars[leftIndex]
-                    bars[leftIndex] = rightBarHeight
+                    swapBarHeights(leftIndex, rightIndex, bars)
+                    animations.push([animationType.SWAP, leftIndex, rightIndex, bars[leftIndex], bars[rightIndex]])
                     //compare the two bars lower on height
                     rightIndex = leftIndex
                     leftIndex = leftIndex - 1   
@@ -153,14 +155,56 @@ function Sorting() {
             for (let j = 0; j < arrayLength - 1 - i; j++){
                 animations.push([animationType.COMPARISON, j, j + 1])
                 if (bars[j] > bars[j+1]){
-                    const j_plus_one_height = bars[j+1]
-                    bars[j+1] = bars[j]
-                    bars[j] = j_plus_one_height
+                    swapBarHeights(j, j+1, bars)
                     animations.push([animationType.SWAP, j, j + 1, bars[j], bars[j+1]])
                 }
             }
         }
         animateSort(animations)
+    }
+
+    function quickSortStarter(){ //clean up and optimize quicksort later, pick better pivot
+        let animations = []
+        quickSort(0, arrayLength - 1, bars, animations)
+        animateSort(animations)
+    }
+
+    function quickSort(leftIndex, rightIndex, array, animations){
+        //base case, partition is 1 element or less
+        if (rightIndex - leftIndex <= 0){
+            return
+        }
+        //picking pivot, and placing it on the right of the array (just rightmost value for now)
+        const pivotIndex = rightIndex
+        const pivotValue = array[pivotIndex]
+        let leftPointer = leftIndex
+        let rightPointer = rightIndex - 1
+
+        //place bars left or right of pivot value
+        while (true){
+            while (array[leftPointer] < pivotValue){
+                animations.push([animationType.COMPARISON, leftPointer, pivotIndex])
+                leftPointer++
+            }
+            animations.push([animationType.COMPARISON, leftPointer, pivotIndex])
+            while (array[rightPointer] > pivotValue && rightPointer > leftPointer){
+                animations.push([animationType.COMPARISON, rightPointer, pivotIndex])
+                rightPointer--
+            }
+            animations.push([animationType.COMPARISON, rightPointer, pivotIndex])
+            if (leftPointer >= rightPointer) break
+            swapBarHeights(leftPointer, rightPointer, array)
+            animations.push([animationType.SWAP, leftPointer, rightPointer, bars[leftPointer], bars[rightPointer]])
+            leftPointer++
+            rightPointer--
+        }
+        //place pivot value where it's supposed to be
+        swapBarHeights(leftPointer, pivotIndex, array)
+        animations.push([animationType.SWAP, leftPointer, pivotIndex, bars[leftPointer], bars[pivotIndex]])
+
+        //sort the two smaller sides
+        quickSort(leftIndex, leftPointer - 1, array, animations)
+        quickSort(leftPointer + 1, rightIndex, array, animations)
     }
 
     function animateSort(animations){
@@ -292,6 +336,7 @@ function Sorting() {
                 <button className="button" onClick={insertionSort}>insertion sort</button>
                 <button className="button" onClick={mergeSortStarter}>merge sort</button>
                 <button className="button" onClick={bubbleSort}>bubble sort</button>
+                <button className="button" onClick={quickSortStarter}>quick sort</button>
                 <div className="slider-box">
                     <div className="slider-text">array size: {arrayLength}</div>
                     <RangeStepInput className="slider" min={ARRAY_MIN_SIZE} max={ARRAY_MAX_SIZE} 
