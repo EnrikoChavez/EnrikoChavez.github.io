@@ -1,0 +1,40 @@
+.home{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+#top{
+    height: 20%;
+}
+
+.home-bar{
+    display: flex;
+    flex-direction: row-reverse;
+    /* background-color: gray; */
+    flex-wrap: wrap;
+}
+
+/*info box is not very reactive todo make better*/
+.info-box{
+    display: flex; 
+    justify-content: center;
+    flex-grow: 1;
+    min-width: 25%;
+}
+
+.stuff{
+    background-color: rgb(190, 242, 255);
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.profile-picture{
+}
+
+#bottom{
+    display: flex;
+    flex-grow: 1;
+}

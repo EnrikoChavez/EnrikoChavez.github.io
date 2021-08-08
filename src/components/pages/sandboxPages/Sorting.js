@@ -163,7 +163,7 @@ function Sorting() {
         animateSort(animations)
     }
 
-    function quickSortStarter(){ //clean up and optimize quicksort later, pick better pivot
+    function quickSortStarter(){
         let animations = []
         quickSort(0, arrayLength - 1, bars, animations)
         animateSort(animations)

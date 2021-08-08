@@ -27,7 +27,7 @@
   /* background-color: #525252; */
   /* padding-top:2%; */
   /* padding-left:0%; */
-  position: relative;
+  position: relative; /*pages are "on top of" navbar (or other way around, check if needed)*/
   z-index: 1;
   overflow:auto;
 }

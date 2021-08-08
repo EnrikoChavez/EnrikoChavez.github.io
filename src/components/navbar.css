@@ -1,5 +1,43 @@
+.navbar{
+    display: flex;
+    flex-direction: column;
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20%;
+}
+
 .rerouters{
     display: flex;
     flex-direction: column;
-    align-content:flex-start;
+    background-color: #f5ffd2;
+    height: 50%;
+}
+
+.nav-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2fcec1;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: 0.1s;
+}
+
+.nav-button:hover{
+    background-color: #41ecde;
+    transform: scale(1.02) perspective(1px)
+}
+
+.nav-button-wrapper{
+    text-decoration: none;
+    margin: 5px 10px;
+}
+
+.padding{
+    display: flex;
+    justify-content: center;
 }
