@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-    background-color: #ffffff;
+    background-color: #18191a;
     align-items: flex-end;
     height: 100%;
 }
@@ -22,7 +22,7 @@
 .sorted-levels{
     display: flex;
     /* flex-grow: 1; */
-    /* background-color: lightgrey; */
+    background-color: #3a3b3c;
     justify-content: center;
     /* height: 50%; */
 }
@@ -63,7 +63,7 @@
 }
 
 .button{
-    background-color: #9be4ff;
+    background-color: #2ec7ff;
     color: black;
     font-size: calc(8px + 0.5vw);
     padding-left: 3px;
@@ -76,7 +76,7 @@
 }
 
 .cancel-button{
-    background-color: #9be4ff;
+    background-color: #2ec7ff;
     color: black;
     font-size: calc(6px + 0.5vw);
     padding-left: 3px;
@@ -99,7 +99,7 @@
 
 .slider-text{
     display: flex;
-    background-color: rgb(250, 250, 250);
+    background-color: #3a3b3c;
     border: 1px solid black;
     justify-content: center;
     align-items: center;

@@ -14,23 +14,25 @@
 .rerouters{
     display: flex;
     flex-direction: column;
-    background-color: #fdfdfd;
+    background-color: #242526;
     height: 50%;
+}
+
+.nav-button:hover{
+    background-color: #e7e424;
+    transform: scale(1.02) perspective(1px);
+    color: black;
 }
 
 .nav-button{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #2fcec1;
+    background-color: #3a3b3c;
     text-decoration: none;
     border-radius: 30px;
     transition: 0.1s;
-}
-
-.nav-button:hover{
-    background-color: #41ecde;
-    transform: scale(1.02) perspective(1px)
+    padding: 0px 20px;
 }
 
 .nav-button-wrapper{
