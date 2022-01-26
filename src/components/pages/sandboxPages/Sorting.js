@@ -329,7 +329,7 @@ function Sorting() {
                         +
                         </button>
                     </div>
-                    <div className="sorted-text">sorted {100 * (1 - 1/sortedLevels[sortedLevelIndex])}%</div>
+                    <div className="sorted-text">initially sorted {100 * (1 - 1/sortedLevels[sortedLevelIndex])}%</div>
                     <button className="cancel-button" onClick={reloadPage}>cancel long sort<br/>(refresh page)</button>
                 </div>
                 <button className="button" onClick={selectionSort}>selection sort</button>
