@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import {HashRouter as Router, Switch, Route} from 'react-router-dom'
 import './App.css'
 import Navbar from './components/Navbar'
 import Home from './components/pages/Home'
@@ -19,7 +19,7 @@ function App() {
             <Route path='/' exact component={Home}/>
             <Route path='/about' exact component={About}/>
             <Route path='/sandbox' exact component={Sandbox}/>
-            <Route path='/sorting' exact component={Sorting}/>
+            <Route path='/sandbox/sorting' exact component={Sorting}/>
           </Switch>
           </div>
 

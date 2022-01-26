@@ -9,7 +9,7 @@ function Sandbox() {
                 sandbox projects
             </div>
             <div className="project-list">
-                <Link className="nav-button-wrapper" to="/sorting">
+                <Link className="nav-button-wrapper" to="/sandbox/sorting">
                     <div className="nav-button">sorting</div>
                 </Link>
             </div>
