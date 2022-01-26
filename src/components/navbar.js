@@ -26,7 +26,7 @@ function Navbar() {
 
 //hacky way of stopping sort from running if user leaves sort page before sort is over
 function refreshPage(pathName){
-    if (window.location.pathname === "/sandbox/sorting"){
+    if (window.location.pathname === "/sorting"){
         window.location.reload(false);
         window.location.assign(pathName)
     }
