@@ -16,7 +16,8 @@
 .reset-area{
     display: flex;
     flex-direction: column;
-    border: 1px dotted grey;
+    /* border: 1px dotted grey; */
+    margin-right: 3px;
 }
 
 .sorted-levels{
@@ -100,8 +101,7 @@
 .slider-text{
     display: flex;
     background-color: #3a3b3c;
-    border: 1px solid black;
     justify-content: center;
     align-items: center;
-    margin-left: 5px;
+    margin-left: 3px;
 }
