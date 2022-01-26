@@ -20,7 +20,7 @@ function Sorting() {
     }
 
     const [sortedLevelIndex, setSortedLevelIndex] = useState(0)
-    const [speedLevelIndex, setSpeedLevelIndex] = useState(2)
+    const [speedLevelIndex, setSpeedLevelIndex] = useState(3)
     const [arrayLength, setArrayLength] = useState(32)
     const [ms, setMs] = useState(speedLevels[speedLevelIndex])
     const [bars, setBars] = useState([])
@@ -332,11 +332,11 @@ function Sorting() {
                     <div className="sorted-text">initially sorted {100 * (1 - 1/sortedLevels[sortedLevelIndex])}%</div>
                     <button className="cancel-button" onClick={reloadPage}>cancel long sort<br/>(refresh page)</button>
                 </div>
-                <button className="button" onClick={selectionSort}>selection sort</button>
                 <button className="button" onClick={insertionSort}>insertion sort</button>
                 <button className="button" onClick={mergeSortStarter}>merge sort</button>
-                <button className="button" onClick={bubbleSort}>bubble sort</button>
                 <button className="button" onClick={quickSortStarter}>quick sort</button>
+                <button className="button" onClick={bubbleSort}>bubble sort</button>
+                <button className="button" onClick={selectionSort}>selection sort</button>
                 <div className="slider-box">
                     <div className="slider-text">array size: {arrayLength}</div>
                     <RangeStepInput className="slider" min={ARRAY_MIN_SIZE} max={ARRAY_MAX_SIZE} 
