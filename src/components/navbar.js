@@ -24,12 +24,13 @@ function Navbar() {
     )
 }
 
-//hacky way of stopping sort from running if user leaves sort page before sort is over
+//hacky way of stopping sort from running if user leaves sort page before sort is over, only works with browser routher, decommissioned
 function refreshPage(pathName){
-    if (window.location.pathname === "/sandbox/sorting"){
-        window.location.reload(false);
-        window.location.assign(pathName)
-    }
+    // console.log(window.location.hash)
+    // if (window.location.hash === "#/sandbox/sorting"){
+    //     // window.location.reload()
+    //     // window.location.assign(pathName)
+    // }
 }
 
 export default Navbar
