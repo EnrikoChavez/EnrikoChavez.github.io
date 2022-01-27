@@ -151,14 +151,26 @@ function Sorting() {
 
     function bubbleSort(){
         let animations = []
+        let no_swaps = true
+        let last_bar_index_swapped = arrayLength - 1
         for (let i = 0; i < arrayLength - 1; i++){
-            for (let j = 0; j < arrayLength - 1 - i; j++){
+            console.log("last bar_index swapped", last_bar_index_swapped)
+            let index_swapped = 0
+            for (let j = 0; j < last_bar_index_swapped; j++){
                 animations.push([animationType.COMPARISON, j, j + 1])
                 if (bars[j] > bars[j+1]){
                     swapBarHeights(j, j+1, bars)
                     animations.push([animationType.SWAP, j, j + 1, bars[j], bars[j+1]])
+                    index_swapped = j
+                    no_swaps = false
                 }
             }
+            if (no_swaps){
+                console.log("broke")
+                break
+            }
+            no_swaps = true
+            last_bar_index_swapped = index_swapped
         }
         animateSort(animations)
     }
