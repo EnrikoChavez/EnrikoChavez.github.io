@@ -203,7 +203,7 @@ function Sorting() {
                 animations.push([animationType.COMPARISON, rightPointer, pivotIndex])
                 rightPointer--
             }
-            animations.push([animationType.COMPARISON, rightPointer, pivotIndex])
+            animations.push([animationType.COMPARISON, rightPointer + 1, pivotIndex])
             if (leftPointer >= rightPointer) break
             swapBarHeights(leftPointer, rightPointer, array)
             animations.push([animationType.SWAP, leftPointer, rightPointer, bars[leftPointer], bars[rightPointer]])
