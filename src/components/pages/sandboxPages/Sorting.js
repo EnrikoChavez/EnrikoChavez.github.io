@@ -218,12 +218,12 @@ function Sorting() {
                     const i_ind = animation[1] 
                     const j_ind = animation[2]
                     setTimeout(() => {
-                        barsScraped[i_ind].style.backgroundColor = 'turquoise'
-                        barsScraped[j_ind].style.backgroundColor = 'turquoise'                   
+                        barsScraped[i_ind].style.backgroundColor = '#aabbbc'
+                        barsScraped[j_ind].style.backgroundColor = '#aabbbc'                   
                     }, i * (ms))
                     setTimeout(() => {
-                        barsScraped[i_ind].style.backgroundColor = 'red'
-                        barsScraped[j_ind].style.backgroundColor = 'red'                  
+                        barsScraped[i_ind].style.backgroundColor = '#eb4528'
+                        barsScraped[j_ind].style.backgroundColor = '#eb4528'                  
                     }, (i + 1) * (ms))
                     break
                 }
@@ -233,14 +233,14 @@ function Sorting() {
                     const new_i_height = animation[3]
                     const new_j_height = animation[4]
                     setTimeout(() => {
-                        barsScraped[i_ind].style.backgroundColor = 'lightgreen'
-                        barsScraped[j_ind].style.backgroundColor = 'lightgreen'
+                        barsScraped[i_ind].style.backgroundColor = '#caef8c'
+                        barsScraped[j_ind].style.backgroundColor = '#caef8c'
                         barsScraped[i_ind].style.height = `${new_i_height}%`
                         barsScraped[j_ind].style.height = `${new_j_height}%`
                     }, i * (ms))
                     setTimeout(() => {
-                        barsScraped[i_ind].style.backgroundColor = 'red'
-                        barsScraped[j_ind].style.backgroundColor = 'red'
+                        barsScraped[i_ind].style.backgroundColor = '#eb4528'
+                        barsScraped[j_ind].style.backgroundColor = '#eb4528'
                     }, (i + 1) * (ms))
                     break
                 }
@@ -248,11 +248,11 @@ function Sorting() {
                     const i_ind = animation[1]
                     const new_i_height = animation[2]
                     setTimeout(() => {
-                        barsScraped[i_ind].style.backgroundColor = 'lightgreen'
+                        barsScraped[i_ind].style.backgroundColor = '#caef8c'
                         barsScraped[i_ind].style.height = `${new_i_height}%`
                     }, i * (ms))
                     setTimeout(() => {
-                        barsScraped[i_ind].style.backgroundColor = 'red'
+                        barsScraped[i_ind].style.backgroundColor = '#eb4528'
                     }, (i + 1) * (ms))
                     break
                 }
@@ -313,6 +313,7 @@ function Sorting() {
 
     return (
         <div className="sorting-page">
+            TW: Flashing Colors -- If on mobile, scroll down for more options
             <div className="all-bars">
                 {bars.map((value, idx) => (
                     <div className="single-bar" key={idx} style={{height: `${value}%`}}></div>
