@@ -42,7 +42,7 @@ function Sorting() {
         setBars(array)
     }
 
-    function swapBarHeights(indexOne, indexTwo, array){ //use it on any swaps, TODO
+    function swapBarHeights(indexOne, indexTwo, array){ 
         const indexOneHeight = array[indexOne]
         array[indexOne] = array[indexTwo]
         array[indexTwo] = indexOneHeight
@@ -154,7 +154,6 @@ function Sorting() {
         let no_swaps = true
         let last_bar_index_swapped = arrayLength - 1
         for (let i = 0; i < arrayLength - 1; i++){
-            console.log("last bar_index swapped", last_bar_index_swapped)
             let index_swapped = 0
             for (let j = 0; j < last_bar_index_swapped; j++){
                 animations.push([animationType.COMPARISON, j, j + 1])
@@ -166,7 +165,6 @@ function Sorting() {
                 }
             }
             if (no_swaps){
-                console.log("broke")
                 break
             }
             no_swaps = true
@@ -222,6 +220,10 @@ function Sorting() {
     function animateSort(animations){
         disableButtonsWhenSort(animations)
         const barsScraped = document.getElementsByClassName("single-bar")
+        const default_color = '#eb4528' //red 
+        const comparison_color = '#aabbbc' //blue
+        const change_color = '#caef8c' //green
+        var timers = []
         for (let i = 0; i < animations.length; i++){  
             const animation = animations[i]
             const type = animation[0]
@@ -229,14 +231,19 @@ function Sorting() {
                 case animationType.COMPARISON:{
                     const i_ind = animation[1] 
                     const j_ind = animation[2]
-                    setTimeout(() => {
-                        barsScraped[i_ind].style.backgroundColor = '#aabbbc'
-                        barsScraped[j_ind].style.backgroundColor = '#aabbbc'                   
-                    }, i * (ms))
-                    setTimeout(() => {
-                        barsScraped[i_ind].style.backgroundColor = '#eb4528'
-                        barsScraped[j_ind].style.backgroundColor = '#eb4528'                  
-                    }, (i + 1) * (ms))
+                    timers.push(adjustableTimer(() => {
+                        barsScraped[i_ind].style.backgroundColor = comparison_color
+                        barsScraped[j_ind].style.backgroundColor = comparison_color                 
+                    }, i * (ms)))
+
+                    /* setTimeout(() => {
+                        barsScraped[i_ind].style.backgroundColor = comparison_color
+                        barsScraped[j_ind].style.backgroundColor = comparison_color                 
+                    }, i * (ms)) */
+                    timers.push(adjustableTimer(() => {
+                        barsScraped[i_ind].style.backgroundColor = default_color
+                        barsScraped[j_ind].style.backgroundColor = default_color                
+                    }, (i + 1) * (ms)))
                     break
                 }
                 case animationType.SWAP:{
@@ -244,28 +251,28 @@ function Sorting() {
                     const j_ind = animation[2]
                     const new_i_height = animation[3]
                     const new_j_height = animation[4]
-                    setTimeout(() => {
-                        barsScraped[i_ind].style.backgroundColor = '#caef8c'
-                        barsScraped[j_ind].style.backgroundColor = '#caef8c'
+                    timers.push(adjustableTimer(() => {
+                        barsScraped[i_ind].style.backgroundColor = change_color
+                        barsScraped[j_ind].style.backgroundColor = change_color
                         barsScraped[i_ind].style.height = `${new_i_height}%`
                         barsScraped[j_ind].style.height = `${new_j_height}%`
-                    }, i * (ms))
-                    setTimeout(() => {
-                        barsScraped[i_ind].style.backgroundColor = '#eb4528'
-                        barsScraped[j_ind].style.backgroundColor = '#eb4528'
-                    }, (i + 1) * (ms))
+                    }, i * (ms)))
+                    timers.push(adjustableTimer(() => {
+                        barsScraped[i_ind].style.backgroundColor = default_color
+                        barsScraped[j_ind].style.backgroundColor = default_color
+                    }, (i + 1) * (ms)))
                     break
                 }
                 case animationType.SINGLE_CHANGE:{
                     const i_ind = animation[1]
                     const new_i_height = animation[2]
-                    setTimeout(() => {
-                        barsScraped[i_ind].style.backgroundColor = '#caef8c'
+                    timers.push(adjustableTimer(() => {
+                        barsScraped[i_ind].style.backgroundColor = change_color
                         barsScraped[i_ind].style.height = `${new_i_height}%`
-                    }, i * (ms))
-                    setTimeout(() => {
-                        barsScraped[i_ind].style.backgroundColor = '#eb4528'
-                    }, (i + 1) * (ms))
+                    }, i * (ms)))
+                    timers.push(adjustableTimer(() => {
+                        barsScraped[i_ind].style.backgroundColor = default_color
+                    }, (i + 1) * (ms)))
                     break
                 }
                 default:{
@@ -274,6 +281,16 @@ function Sorting() {
                 }
             }
         }
+        timers.map(myFunc)
+
+    }
+
+    function myFunc(timer, index){
+        //console.log("timer time", timer.initialMs, "   index", index)
+        //timer.reduce((Math.floor((index+1)/2))*4)
+        timer.reduce(2)
+        console.log("timer time", timer.initialMs, "   index", index)
+        return timer
     }
 
     function disableButtonsWhenSort(animations){
@@ -296,6 +313,23 @@ function Sorting() {
             sliders[0].disabled = false
             sliders[1].disabled = false
         }, (animations.length) * (ms) + 10)
+    }
+
+    //https://stackoverflow.com/questions/11432868/how-can-you-reduce-the-current-time-in-settimeout
+    function adjustableTimer(action, initialMs){   
+        return {
+            timerId: setTimeout(action, initialMs),
+            startTime: new Date(),
+            initialMs: initialMs,
+            action: action,
+            reduce: function(howMuch){
+                var elapsedTime = new Date() - this.startTime;
+                var remainingTime = this.initialMs - elapsedTime;
+                var newTime = remainingTime - howMuch;
+                clearTimeout(this.timerId);            
+                this.timerId = setTimeout(this.action,newTime);
+            }
+        };       
     }
 
     //for changing array size
